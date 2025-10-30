@@ -15,7 +15,7 @@
  *  - Filter: `aboutEntries.find(e => e.data.lang === Astro.locals.language)`
  */
 
-import { z, defineCollection } from "astro:content";
+import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 /**
@@ -60,6 +60,20 @@ const indexCollection = defineCollection({
   }),
 });
 
+const snippetsCollection = defineCollection({
+  // Snippets will live under src/pages/snippets/.content and can be .md or .mdx
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "src/pages/snippets/.content",
+  }),
+  schema: z.object({
+    ...baseSchema,
+    slug: z.string().min(1),
+    filename: z.string().min(1),
+    raw: z.string().min(1),
+  }),
+});
+
 /**
  * Export the collections object required by Astro.
  *
@@ -68,4 +82,5 @@ const indexCollection = defineCollection({
 export const collections = {
   about: aboutCollection,
   home: indexCollection,
+  snippets: snippetsCollection,
 } as const;

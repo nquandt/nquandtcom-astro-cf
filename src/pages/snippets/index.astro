@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import { getLanguageFileWithFallback } from "@/utils/collections";
+import Container from "@/components/Container.astro";
+
+const raw = await getCollection("snippets");
+// render each entry lazily when listing
+const entries = raw.map((e) => ({ slug: e.data.slug, title: e.data.title }));
+---
+
+<Layout title="Snippets">
+  <Container>
+    <h1>Snippets</h1>
+    <ul>
+      {
+        entries.map((e) => (
+          <li>
+            <a href={`/snippets/${e.slug}`}>{e.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Layout>

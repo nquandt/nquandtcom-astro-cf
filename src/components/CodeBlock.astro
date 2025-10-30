@@ -1,0 +1,60 @@
+---
+interface Props {
+  code: string;
+  lang?: string;
+  filename?: string;
+  rawUrl?: string;
+}
+
+import CodeBlockClient from './CodeBlockClient.tsx';
+
+const { code, lang = "text", filename, rawUrl } = Astro.props as Props;
+
+---
+
+<!-- Render a lightweight server-side wrapper and mount the Solid client component for interactivity -->
+<CodeBlockClient client:idle code={code} lang={lang} filename={filename} rawUrl={rawUrl} initialWrap={true} allowToggle={true} />
+
+<style>
+  /* Prefer UnoCSS/Tailwind utility classes for visuals. Keep a small fallback for
+     z-index and hit-area handling below. */
+  /* Code block layout: allow horizontal scrolling without breaking page flow */
+  .codeblock-wrap{
+    overflow-x: auto; /* allow horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0; /* allow shrinking inside flex containers */
+  }
+
+  .codeblock-root{
+    min-width: 0; /* prevent the root from forcing overflow in flex parents */
+  }
+
+  .codeblock-pre{
+    margin: 0; /* remove default pre margin */
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Default: wrap code lines (wordwrap) */
+  .codeblock-root[data-wrap="on"] .codeblock-code{
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Scroll mode: preserve whitespace and allow horizontal scroll */
+  .codeblock-root[data-wrap="off"] .codeblock-code{
+    white-space: pre;
+    min-width: max-content; /* let the code determine intrinsic width so the wrapper can scroll */
+    overflow-wrap: normal;
+  }
+
+  /* Minimal scoped rules: ensure the action bar stays above the code and
+     provide a small non-interactive hit-area to avoid overlap issues. */
+  .codeblock-action-bar{ z-index: 20; pointer-events: auto; }
+  .codeblock-pre{ position: relative; }
+  .codeblock-pre::after{ content: ''; position: absolute; top: .25rem; right: .25rem; width: 6.5rem; height: 2.25rem; pointer-events: none; }
+</style>
