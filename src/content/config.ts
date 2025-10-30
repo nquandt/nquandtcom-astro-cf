@@ -46,7 +46,7 @@ const aboutCollection = defineCollection({
   // after migrating files to MDX. The glob pattern includes both
   // extensions so getCollection/getEntry will find entries regardless of
   // whether we rename to .mdx immediately.
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/pages/about" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/pages/about/.content" }),
   schema: z.object({
     ...baseSchema,
   }),
@@ -54,7 +54,7 @@ const aboutCollection = defineCollection({
 
 const indexCollection = defineCollection({
   // Support .md and .mdx for top-level pages (home, index files)
-  loader: glob({ pattern: "*.{md,mdx}", base: "src/pages" }),
+  loader: glob({ pattern: "*.{md,mdx}", base: "src/pages/.content" }),
   schema: z.object({
     ...baseSchema,
   }),
