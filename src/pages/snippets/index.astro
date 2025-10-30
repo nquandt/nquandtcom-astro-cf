@@ -1,25 +1,44 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import { getLanguageFileWithFallback } from "@/utils/collections";
 import Container from "@/components/Container.astro";
+import { makeLocalizedPathBuilder } from "@/utils/links";
 
 const raw = await getCollection("snippets");
-// render each entry lazily when listing
-const entries = raw.map((e) => ({ slug: e.data.slug, title: e.data.title }));
+// render each entry lazily when listing, include optional description
+const entries = raw.map((e) => ({
+  slug: e.data.slug,
+  title: e.data.title,
+  description: e.data.description ?? null,
+}));
+
+
+const localizedPath = makeLocalizedPathBuilder(Astro);
 ---
 
 <Layout title="Snippets">
   <Container>
-    <h1>Snippets</h1>
-    <ul>
-      {
-        entries.map((e) => (
-          <li>
-            <a href={`/snippets/${e.slug}`}>{e.title}</a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="flex flex-col gap-4">
+      <h1>Snippets</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {
+          entries.map((e) => (
+            <article class="p-4 border rounded hover:shadow-md">
+              <h2 class="text-lg font-semibold mb-2">
+                <a href={localizedPath(`/snippets/${e.slug}`)} class="hover:underline">{e.title}</a>
+              </h2>
+              {e.description ? (
+                <p class="text-sm text-muted mb-2">{e.description}</p>
+              ) : (
+                <p class="text-sm text-muted mb-2 italic">No description provided</p>
+              )}
+              <a href={localizedPath(`/snippets/${e.slug}`)} class="text-blue-600 dark:text-blue-400" aria-label={`Open ${e.title}`}>
+                Read snippet →
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
   </Container>
 </Layout>

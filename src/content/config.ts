@@ -63,14 +63,16 @@ const indexCollection = defineCollection({
 const snippetsCollection = defineCollection({
   // Snippets will live under src/pages/snippets/.content and can be .md or .mdx
   loader: glob({
-    pattern: "**/*.{md,mdx}",
-    base: "src/pages/snippets/.content",
+    pattern: "**/index.{md,mdx}",
+    base: "src/content/snippets",
   }),
   schema: z.object({
     ...baseSchema,
     slug: z.string().min(1),
     filename: z.string().min(1),
     raw: z.string().min(1),
+    // Optional short description for snippets to show in listings and previews
+    description: z.string().min(1),
   }),
 });
 

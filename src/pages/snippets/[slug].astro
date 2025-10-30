@@ -4,18 +4,31 @@ import Layout from "@/layouts/Layout.astro";
 import Markdown2 from "@/components/Markdown2.astro";
 import CodeBlock from "@/components/CodeBlock.astro";
 import Container from "@/components/Container.astro";
+import { makeLocalizedPathBuilder } from "@/utils/links";
 
 const { slug } = Astro.params;
 const all = await getCollection("snippets");
 const entry = all.find((e) => e.data.slug === slug);
 if (!entry) throw new Error("Snippet not found");
 const rendered = await render(entry);
+const localizedPath = makeLocalizedPathBuilder(Astro);
 ---
 
 <Layout title={entry.data.title} description={entry.body?.slice(0, 140)}>
   <Container>
     <div class="w-full flex flex-col gap-4">
-      <h1>{entry.data.title}</h1>
+      <div class="flex gap-2">
+        <a
+          href={localizedPath("/snippets")}
+          class="inline-block text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+          aria-label="Back to snippets index"
+        ><h1>
+          Snippets/
+          </h1>
+        </a>
+        <h1>{entry.data.title}</h1>
+      </div>
+      {entry.data.description && <p>{entry.data.description}</p>}
       <Markdown2 Content={rendered.Content} components={{ CodeBlock }} />
     </div>
   </Container>
