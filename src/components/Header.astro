@@ -26,6 +26,7 @@ const session = Astro.locals.session;
             <div class="flex gap-4 items-center">
                 <a href={localizedPath("/about")} data-tag="end-arrow" >About</a>
                 <a href={localizedPath("/experience")} data-tag="end-arrow">Experience</a>
+                <a href={localizedPath("/snippets")} data-tag="end-arrow">Snippets</a>
                 {session && (
                     <>
                         <a href={localizedPath("/portal")}>Portal</a>
