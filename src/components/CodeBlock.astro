@@ -1,19 +1,31 @@
 ---
 interface Props {
   code: string;
-  lang?: string;
+  lang?: CodeLanguage;
   filename?: string;
   rawUrl?: string;
 }
 
+import type { CodeLanguage } from 'astro';
 import CodeBlockClient from './CodeBlockClient.tsx';
+import { Code } from 'astro:components';
 
 const { code, lang = "text", filename, rawUrl } = Astro.props as Props;
 
 ---
 
-<!-- Render a lightweight server-side wrapper and mount the Solid client component for interactivity -->
-<CodeBlockClient client:idle code={code} lang={lang} filename={filename} rawUrl={rawUrl} initialWrap={true} allowToggle={true} />
+<!-- Render the Shiki-powered server-side Code block and mount a tiny client that
+     only renders the action bar and controls the already-rendered code. -->
+<div class="codeblock-root relative my-4 w-full" data-wrap="on">
+  <div class="prose max-w-full">
+    <div class="codeblock-wrap rounded-md bg-surface relative">
+      <Code code={code} theme="dracula" lang={lang} />
+
+      <!-- Client: idle mount — will attach to the server-rendered code element -->
+      <CodeBlockClient client:idle code={code} lang={lang} filename={filename} rawUrl={rawUrl} initialWrap={true} allowToggle={true} />
+    </div>
+  </div>
+</div>
 
 <style>
   /* Prefer UnoCSS/Tailwind utility classes for visuals. Keep a small fallback for

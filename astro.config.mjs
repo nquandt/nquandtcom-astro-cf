@@ -18,6 +18,11 @@ export default defineConfig({
     // MDX integration allows using components inside .mdx files
     mdx()
   ],
+  markdown: {
+    shikiConfig: {
+      theme: 'dracula',
+    },
+  },
   output: 'server',
   adapter: process.env.ASTRO_ADAPTER === 'node' ? node({ mode: "standalone" }) : cloudflare({
     platformProxy: {
