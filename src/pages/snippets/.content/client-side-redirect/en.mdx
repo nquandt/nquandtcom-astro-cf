@@ -7,7 +7,7 @@ raw: "/snippets/ClientSideRedirectExtensions.cs"
 ---
 
 
-I've found this helpful when trying to force cookie attachment in a user flow given "strict" cookie safesite settings.
+If ever needing to force cookie attachment in a user flow given "strict" cookie safesite settings.
 
 <CodeBlock lang="csharp" filename="ClientSideRedirectExtensions.cs" rawUrl="/snippets/ClientSideRedirectExtensions.cs" code={`
 public static class ClientSideRedirectExtensions
@@ -18,7 +18,15 @@ public static class ClientSideRedirectExtensions
         context.Response.ContentType = "text/html";
         context.Response.StatusCode = 200;                
 
-        await context.Response.WriteAsync($"<html><head><meta http-equiv=\"refresh\" content=\"0; URL='{location}'\"/></head></html>", System.Text.Encoding.UTF8, context.RequestAborted);
+        await context.Response.WriteAsync($@"
+<html>
+    <head>
+        <meta http-equiv=""refresh"" content=""0; URL='{location}'""/>
+    </head>
+</html>"
+        , System.Text.Encoding.UTF8, context.RequestAborted);
     }
 }
 `} />
+
+This does mess with client side analytics tools that rely on things like url referrer headers since the redirect now happens entirely on the client side. You also would need to be cautious about traffic metrics as this would look like an extra visit in many cases.
