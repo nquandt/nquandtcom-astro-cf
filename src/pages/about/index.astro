@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import { getAbout } from "@/services/about";
+import Prose from "@/components/Prose.astro";
+import Markdown2 from "@/components/Markdown2.astro";
+
+const {
+    title,
+    body: overview,
+    Content,
+} = await getAbout(Astro.locals?.language);
+---
+
+<Layout title={title}>
+    <Container>
+       <Markdown2 Content={Content} />
+    </Container>
+</Layout>

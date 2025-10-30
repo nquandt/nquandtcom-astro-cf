@@ -1,0 +1,17 @@
+---
+interface Props {
+    title: string;
+    time: string;
+}
+
+const { title, time } = Astro.props;
+---
+
+<div class="flex justify-between">
+    <div class="font-bold">
+        {title}
+    </div>
+    <div>
+        {time}
+    </div>
+</div>

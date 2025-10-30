@@ -1,0 +1,37 @@
+---
+type Position = {
+    title: string;
+    time: string;
+};
+interface Props {
+    position: Position;
+    location: string;
+    company: string;
+    content: string;
+    overview?: string;
+}
+
+import Position from "./Position.astro";
+import Markdown from "@/components/Markdown.astro";
+
+const { position, company, location, content, overview } = Astro.props;
+
+const positions = Array.isArray(position) ? position : [position];
+---
+
+<div class="flex flex-col w-full gap-2">
+    <div>
+        <div class="flex justify-between">
+            <div>
+                {company}
+            </div>
+            <div>
+                {location}
+                <!-- {time} -->
+            </div>
+        </div>
+        {positions.map((x) => <Position {...x} />)}
+    </div>
+    {overview && <Markdown content={overview} />}
+    <Markdown content={content} />
+</div>

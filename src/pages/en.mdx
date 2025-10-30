@@ -1,0 +1,39 @@
+---
+title: "Home"
+lang: "en"
+---
+import SwapWords from "@/components/SwapWordsWrapper.astro";
+
+<div class="mb-4">
+<h1 style="margin-bottom: 0;">Nicholas Quandt</h1>
+Software Engineer | Bouldering Enthusiast
+</div>
+
+<div class="flex flex-col items-center">
+
+<div class="w-full">
+I built this website as a tool for <SwapWords options={[
+	"learning.",
+	"engaging.",
+	"teaching.",
+	"sharing.",
+	"exploring.",
+	"creating.",
+	"collaborating.",
+	"inspiring.",
+	"mentoring.",
+	"experimenting.",
+	"discovering.",
+	"connecting.",
+	"guiding.",
+	"contributing.",
+]} interval={2500} transition={300} />
+</div>
+<hr class="border-gray-200 dark:border-gray-700 w-12 mx-auto" />
+<div class="w-full">
+<p class="mr-auto pr-4">
+If you're curious who I am or what I do, feel free to explore
+<span data-tag="start-arrow">around.</span>
+</p>
+</div>
+</div>

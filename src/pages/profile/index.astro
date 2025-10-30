@@ -1,0 +1,18 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import LogoutButton from "@/components/LogoutButton";
+
+if (Astro.locals.user === null) {
+	return Astro.redirect("/login");
+}
+---
+
+<Layout title="Profile">
+    <Container>
+        <h1>Hi, {Astro.locals.user.username}!</h1>
+		<img src={`https://avatars.githubusercontent.com/u/${Astro.locals.user.githubId}`} height="100px" width="100px" />
+		<p>Email: {Astro.locals.user.email}</p>
+		<LogoutButton client:load />
+    </Container>
+</Layout>

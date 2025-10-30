@@ -1,0 +1,54 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nquandtcom-astro-cf",
+  "main": "./dist/_worker.js/index.js",
+  // Update to today's date
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "6af9c38f3b3f4e91a391e3812c1006bd",
+      "preview_id": "6af9c38f3b3f4e91a391e3812c1006bd"
+    },
+    {
+      "binding": "SESSIONS",
+      "id": "b134eb078b6749168be7a79b21e10ddb",
+      "preview_id": "18d1dd54d9d24183bb57aa604c73759c"
+    },
+    {
+      "binding": "USERS",
+      "id": "29d5f0916a4d4eed9cb53bbdb41d1f07",
+      "preview_id": "f7d5949d9be240dab2ef7070568e4352"
+    }
+  ],
+  "vars": {
+    "GITHUB_REDIRECT_URI": "https://nquandt.com/login/github/callback"
+  },
+  // Secrets (set via CLI, not committed to version control):
+  // - GITHUB_CLIENT_ID: GitHub OAuth App Client ID
+  // - GITHUB_CLIENT_SECRET: GitHub OAuth App Client Secret
+  // - PERSONAL_EMAIL: Your personal email (only shown when logged in)
+  // - PERSONAL_PHONE: Your personal phone number (only shown when logged in)
+  //
+  // To set secrets, run:
+  //   npx wrangler secret put PERSONAL_EMAIL
+  //   npx wrangler secret put PERSONAL_PHONE
+  "routes": [
+    {
+      "pattern": "nquandt.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.nquandt.com",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

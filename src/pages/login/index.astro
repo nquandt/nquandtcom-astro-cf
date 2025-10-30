@@ -1,0 +1,26 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import LoginForm from "@/components/LoginForm";
+
+if (Astro.locals.session !== null) {
+	return Astro.redirect("/");
+}
+
+const error = Astro.url.searchParams.get("error");
+---
+
+<Layout title="Sign In">
+	<Container>
+		<div class="flex flex-col gap-6 pt-36 px-4 w-full max-w-md mx-auto">
+			<div class="flex flex-col gap-2">
+				<h1 class="text-3xl font-bold">Sign In</h1>
+				<p class="opacity-80">
+					Sign in with your GitHub account to access the portal
+				</p>
+			</div>
+
+			<LoginForm client:load initialError={error} />
+		</div>
+	</Container>
+</Layout>

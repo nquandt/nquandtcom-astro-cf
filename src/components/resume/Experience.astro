@@ -1,0 +1,32 @@
+---
+import { displayDate } from "@/utils/dates";
+import { getExperiences } from "@/services/experience";
+import Job from "./Job.astro";
+import Section from "./Section.astro";
+
+const experiences = await getExperiences();
+---
+
+<Section title="Work Experience">
+    {
+        experiences
+            .sort(
+                (a, b) =>
+                    new Date(b.start).getTime() - new Date(a.start).getTime(),
+            )
+            .map((x) => (
+                <Job
+                    {...{
+                        overview: x.overview,
+                        company: x.company,
+                        content: x.details,
+                        location: x.location,
+                        position: {
+                            title: x.title,
+                            time: `${displayDate(x.start)} - ${x.end ? displayDate(x.end) : "Current"}`,
+                        },
+                    }}
+                />
+            ))
+    }
+</Section>

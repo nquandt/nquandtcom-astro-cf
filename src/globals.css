@@ -1,0 +1,140 @@
+li {
+    p {
+        display: inline;
+    }
+}
+
+ul {
+    @apply list-disc list-inside -indent-8 !pl-8;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+h1 {
+    @apply text-2xl;
+}
+
+h2 {
+    @apply text-xl;
+}
+
+h3 {
+    @apply text-lg;
+}
+
+/* Make h4 inside .prose render with normal weight (override Tailwind Typography) */
+.prose h4 {
+    font-weight: inherit;
+}
+
+.pulse {
+    animation-name: pulse;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-play-state: paused;
+    animation-direction: alternate;
+}
+
+.pulse:hover {
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.active-pulse {
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+.language-box {
+    transform: translateX(-100%) translateX(380px);
+    left: 50%;
+}
+
+@media (max-width: 640px) {
+    .language-box {
+        left: unset;
+        right: 1rem;
+        transform: unset;
+    }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.2);
+    }
+}
+
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+/* Styles for the lightweight swap-words widget */
+.swap-words {
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.swap-words .swap-word {
+    display: inline-block;
+    transition: opacity 300ms ease;
+    opacity: 1;
+}
+
+/* Token-level styles for SwapWords component */
+.swap-word-token {
+    display: inline-block;
+    white-space: pre-wrap;
+    vertical-align: baseline;
+}
+/* .swap-word-token--sep { } */
+
+.swap-word-token--text {
+    transition: opacity 300ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .swap-words .swap-word {
+        transition: none !important;
+        opacity: 1 !important;
+    }
+}
+
+@media print {
+    body {
+        visibility: hidden;
+    }
+
+    #section-to-print {
+        /* padding: 0; */
+        visibility: visible;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+@page {
+    size: auto; /* auto is the initial value */
+
+    /* this affects the margin in the printer settings */
+    /* margin: 5mm 5mm 5mm 5mm; */
+}
+
+/* Paragraph first-line indent: indent the first line by 0.375em so
+   paragraphs look like normal prose. Also apply to Markdown-rendered
+   paragraphs inside .prose. */
+/* p,
+.prose p {
+    text-indent: 1.5em;
+} */

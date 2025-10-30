@@ -1,0 +1,48 @@
+---
+import Container from "@/components/Container.astro";
+import ThemeButton from "@/components/ThemeButton.astro";
+import { makeLocalizedPathBuilder } from "@/utils/links";
+
+const localizedPath = makeLocalizedPathBuilder(Astro);
+const { pathname } = Astro.url;
+const session = Astro.locals.session;
+---
+
+<div
+    class="py-3 flex w-full justify-between fixed bg-gradient-to-b dark:from-zinc-950 light:from-light !from-50% z-10"
+    style={{ height: "80px" }}
+>
+    <Container>
+        <div class="flex w-full h-full items-center justify-between">
+            {
+                pathname === "/" ? (
+                    <div />
+                ) : (
+                    <a class="h-full flex gap-4 items-center" href={localizedPath("/")}>
+                        <span class="font-italic font-serif">quandt</span>
+                    </a>
+                )
+            }
+            <div class="flex gap-4 items-center">
+                <a href={localizedPath("/about")} data-tag="end-arrow" >About</a>
+                <a href={localizedPath("/experience")} data-tag="end-arrow">Experience</a>
+                {session && (
+                    <>
+                        <a href={localizedPath("/portal")}>Portal</a>
+                        <form method="POST" action="/api/logout" style="margin: 0; display: inline;">
+                            <button
+                                type="submit"
+                                class="text-blue-600 dark:text-blue-400 hover:opacity-80 cursor-pointer bg-transparent border-0 p-0 font-inherit"
+                            >
+                                Logout
+                            </button>
+                        </form>
+                    </>
+                )}
+                <ThemeButton />
+            </div>
+        </div>
+    </Container>
+</div>
+<div class="py-3 flex w-full justify-between" style={{ minHeight: "80px" }}>
+</div>

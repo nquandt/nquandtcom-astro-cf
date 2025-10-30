@@ -1,0 +1,50 @@
+---
+import Container from "@/components/Container.astro";
+import VL from "./VL.astro";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { makeLocalizedPathBuilder } from "@/utils/links";
+
+const currentLang = Astro.locals?.language || "en";
+---
+
+<div class="w-full flex flex-col justify-end items-center py-3 mt-auto">
+    <Container>
+        <div
+            class="w-full flex max-sm:flex-col max-sm:justify-center justify-between items-center text-zinc-500 gap-2"
+        >
+            <div>I am a footer.</div>
+            <hr
+                class="border-gray-200 dark:border-gray-700 w-12 mx-auto sm:hidden"
+            />
+            <div class="flex gap-2">
+                <!-- <a href="/contact">Contact</a>
+        <VL />
+        <a href="mailto:contact@nquandt.com">Email</a> -->
+                <!-- <VL /> -->
+                <a
+                    href="https://github.com/nquandt"
+                    target="_blank"
+                    rel="noopener">GitHub</a
+                >
+                <VL />
+                <a
+                    href="https://linkedin.com/in/nquandt"
+                    target="_blank"
+                    rel="noopener">LinkedIn</a
+                >
+            </div>
+
+            <div class="w-[100px]">
+                <div
+                    class="fixed w-[100px] language-box bottom-0 z-[60] pb-3"
+                    aria-hidden={false}
+                >
+                    <LanguageSwitcher
+                        client:load
+                        currentLanguage={currentLang}
+                    />
+                </div>
+            </div>
+        </div>
+    </Container>
+</div>

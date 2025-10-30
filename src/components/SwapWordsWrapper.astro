@@ -1,0 +1,12 @@
+---
+import SwapWords from "@/components/SwapWords";
+
+export interface Props {
+  options: string[];
+  interval?: number;
+  transition?: number;
+}
+const { options, interval, transition } = Astro.props as Props;
+---
+
+<SwapWords client:load options={options} interval={interval} transition={transition} />

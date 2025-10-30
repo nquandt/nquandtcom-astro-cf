@@ -1,0 +1,17 @@
+---
+interface Props {
+    Content: AstroComponentFactory;
+    components?: Record<string, any>;
+}
+
+import Prose from "@/components/Prose.astro";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
+const { Content, components } = Astro.props;
+---
+
+<Prose>
+    <div class="flex flex-col">
+    <Content components={components} />
+    </div>
+</Prose>

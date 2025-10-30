@@ -1,0 +1,152 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+import "@/globals.css";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+
+import { ClientRouter } from "astro:transitions";
+
+import { SUPPORTED_LANGUAGES } from "@/utils/language";
+import LoadWordSwapper from "@/components/LoadWordSwapper";
+
+const { title, description } = Astro.props;
+
+const siteBase = "https://nquandt.com";
+const { pathname, search } = Astro.url;
+const language = Astro.locals?.language ?? "en";
+
+const fullTitle = `Quandt | ${title}`;
+const metaDescription = description ?? "[PLACEHOLDER]";
+const ogImage = "/og-image-1200x630.png";
+
+// Normalize path by removing any leading language segment so alternates can be built
+const normalizedPath = (() => {
+  try {
+    const p = String(pathname || "/");
+    const m = p.match(/^\/([a-z]{2})(?:\/|$)/i);
+    if (m) {
+      return p.replace(new RegExp(`^/${m[1]}`, "i"), "") || "/";
+    }
+    return p || "/";
+  } catch {
+    return pathname || "/";
+  }
+})();
+
+// Canonical includes current pathname and search; prefer language-prefixed URL when current route has language
+const canonicalUrl = (() => {
+  const currentPath = String(pathname || "/");
+  // If current path already includes language, keep it; otherwise build using language from locals
+  const hasLang = /^\/([a-z]{2})(?:\/|$)/i.test(currentPath);
+  const path = hasLang ? currentPath : `/${language}${currentPath === "/" ? "/" : currentPath}`;
+  return siteBase + path + (search ?? "");
+})();
+---
+
+<!doctype html>
+<html lang={language}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="/favicon_32.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon_64.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/favicon_512.png" />
+        <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+
+        <meta name="generator" content={Astro.generator} />
+        <title>{fullTitle}</title>
+
+        <!-- Primary SEO -->
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="robots" content="index, follow" />
+
+        <!-- hreflang alternate links -->
+        {SUPPORTED_LANGUAGES.map((lang) => {
+          const href = siteBase + (normalizedPath === "/" ? `/${lang}/` : `/${lang}${normalizedPath}`);
+          return (<link rel="alternate" hreflang={lang} href={href} />);
+        })}
+        <link rel="alternate" hreflang="x-default" href={siteBase + normalizedPath} />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={language} />
+        <meta property="og:title" content={`Nicholas Quandt — ${title}`} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:alt" content="Nicholas Quandt — Software Engineer" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Nicholas Quandt — ${title}`} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        <!-- Theme color -->
+        <meta name="theme-color" content="#0f172a" />
+
+        <!-- Fonts: preconnect + display=swap for better performance -->
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+
+        <!-- JSON-LD: Person -->
+        <script is:inline type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Nicholas Quandt",
+            "url": siteBase + "/",
+            "sameAs": [
+              "https://github.com/nquandt",
+              "https://www.linkedin.com/in/nquandt"
+            ],
+            "jobTitle": "Software Engineer",
+            "description": metaDescription,
+            "image": ogImage
+          })}
+        </script>
+
+        <!-- Inline theme loader (keeps existing theme toggling behavior) -->
+        <script is:inline type="text/javascript" src="/theme.js"></script>
+
+        <!-- Client-side transitions (Astro) -->
+        <ClientRouter />
+    </head>
+    <body
+        class="font-lato dark:text-gray-3 dark:bg-zinc-950 light:bg-light light:text-gray-7 !print:text-black !print:fill-black overflow-x-hidden overflow-y-scroll"
+    >
+        <script is:inline>
+          /*to prevent Firefox FOUC, this must be here*/
+          let FF_FOUC_FIX;
+        </script>
+        <!-- Skip link for keyboard users (visually hidden until focused) -->
+        <a
+            class="skip-link"
+            href="#main-content"
+            style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
+            onfocus="this.style.position='static';this.style.left='0';this.style.width='auto';this.style.height='auto';this.style.zIndex='9999';"
+            onblur="this.style.position='absolute';this.style.left='-9999px';this.style.width='1px';this.style.height='1px';"
+        >
+            Skip to content
+        </a>
+
+        <!-- canvas is provided by a client-side Solid component mounted on pages that need it -->
+        <main id="main-content" class="w-full h-full relative min-h-screen flex flex-col justify-between items-center gap-32">
+            <div class="w-full flex flex-col justify-start items-center gap-6 print:gap-2 overflow-hidden">
+                <Header />
+                <slot />
+            </div>
+
+            <Footer />
+        </main>
+        
+        <!-- Word swap widget: only load when user allows motion -->
+        <LoadWordSwapper client:load />
+    </body>
+</html>

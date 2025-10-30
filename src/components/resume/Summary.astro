@@ -1,0 +1,38 @@
+---
+import VL from "@/components/VL.astro";
+
+import { getSummary } from "@/services/summary";
+import { getContactInfo } from "@/services/contact";
+import Markdown from "@/components/Markdown.astro";
+
+const { title, statement } = await getSummary();
+const contactInfo = await getContactInfo(Astro.locals.user);
+---
+
+<div class="flex flex-col w-full gap-6 print:gap-2">
+    <div class="flex justify-between">
+        <div class="flex flex-col">
+            <div>Nicholas Quandt</div>
+            <div class="font-bold">{title}</div>
+            {contactInfo.email && (
+                <div class="text-sm">
+                    <a href={`mailto:${contactInfo.email}`} target="_blank" rel="noopener">{contactInfo.email}</a>
+                </div>
+            )}
+            {contactInfo.phone && (
+                <div class="text-sm">
+                    <a href={`tel:${contactInfo.phone}`} target="_blank" rel="noopener">{contactInfo.phone}</a>
+                </div>
+            )}
+        </div>
+        <div class="flex flex-col items-end max-md:hidden">
+            <div class="flex gap-2">
+                <a href="https://www.linkedin.com/in/nquandt" target="_blank" rel="noopener">https://linkedin.com/in/nquandt</a>
+                <VL />
+                <a href="https://github.com/nquandt" target="_blank" rel="noopener">https://github.com/nquandt</a>
+            </div>
+        </div>
+    </div>
+
+    <Markdown content={statement} />
+</div>

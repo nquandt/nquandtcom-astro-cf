@@ -1,0 +1,44 @@
+{
+  "name": "nquandtcom-astro-cf",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "astro build && npx wrangler dev --remote",
+    "dev:local": "astro build && npx wrangler dev",
+    "dev:node": "cross-env ASTRO_ADAPTER=node astro dev",
+    "build:node": "cross-env ASTRO_ADAPTER=node astro build",
+    "build": "astro build",
+    "build:cf": "astro build",
+    "preview": "dotenv -- astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.10",
+    "@astrojs/mdx": "^4.3.9",
+    "@astrojs/node": "^9.5.0",
+    "@astrojs/solid-js": "^5.1.1",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "@pilcrowjs/object-parser": "^0.0.4",
+    "arctic": "^3.7.0",
+    "astro": "^5.14.3",
+    "marked": "^16.4.0",
+    "solid-js": "^1.9.9"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251008.0",
+    "@iconify-json/carbon": "^1.2.13",
+    "@unocss/astro": "^66.5.2",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^10.0.0",
+    "unocss": "^66.5.2",
+    "wrangler": "^4.42.2"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.52.4"
+  }
+}

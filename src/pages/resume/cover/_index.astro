@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import Summary from "@/components/resume/Summary.astro";
+import Experience from "@/components/resume/Experience.astro";
+import Section from "@/components/resume/Section.astro";
+
+import Markdown from "@/components/Markdown.astro";
+---
+
+<Layout title="Cover">
+    <Container>
+        <div
+            id="section-to-print"
+            class="flex flex-col w-full gap-6 print:gap-2 print:text-xs"
+        >
+        </div>
+    </Container>
+</Layout>

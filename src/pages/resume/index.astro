@@ -1,0 +1,56 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import Summary from "@/components/resume/Summary.astro";
+import Experience from "@/components/resume/Experience.astro";
+import Section from "@/components/resume/Section.astro";
+---
+
+<Layout title="Resume">
+    <Container>
+        <div
+            id="section-to-print"
+            class="flex flex-col w-full gap-6 print:gap-2 print:text-xs"
+        >
+            <Summary />
+            <Experience />
+            <Section title="Education">
+                <div class="flex justify-between">
+                    <div class="font-bold">Marquette University</div>
+                    <div>Milwaukee, WI</div>
+                </div>
+                <div>
+                    <div
+                        class="flex max-md:flex-col justify-between list-disc list-inside -indent-8 !pl-8"
+                    >
+                        <div style={{ display: "list-item" }}>
+                            Master of Science in Computer Science
+                        </div>
+                        <div>August 2019 - July 2021</div>
+                    </div>
+                    <div
+                        class="flex max-md:flex-col justify-between list-disc list-inside -indent-8 !pl-8"
+                    >
+                        <div style={{ display: "list-item" }}>
+                            Bachelor of Science in Mathematics
+                        </div>
+                        <div>August 2016 - May 2019</div>
+                    </div>
+                </div>
+            </Section>
+            <Section title="Skills"
+                ><div class="flex justify-between text-justify">
+                    C#, .NET, ASP.NET Core, React, Next.js, JavaScript,
+                    TypeScript, Azure, Azure App Configuration, Azure Key Vault,
+                    Azure Front Door, Redis, Terraform, OpenTelemetry, New
+                    Relic, REST APIs, Microservices, BFF Architecture,
+                    Server-Side Rendering (SSR), CI/CD, Containerization,
+                    Infrastructure as Code (IaC), Feature Flags, Observability,
+                    Design Systems, Git, GitHub, Domain-Driven Design (DDD),
+                    Modular Architecture, Dependency Injection, A/B Testing,
+                    System Design, Performance Optimization, Scalability
+                </div>
+            </Section>
+        </div>
+    </Container>
+</Layout>

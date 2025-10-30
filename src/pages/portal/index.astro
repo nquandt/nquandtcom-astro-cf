@@ -1,0 +1,75 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/Container.astro";
+import UserManagement from "@/components/UserManagement";
+import { isAdmin } from "@/server/auth";
+
+// Protect this page - require authentication
+if (!Astro.locals.session) {
+	return Astro.redirect("/login");
+}
+
+const user = Astro.locals.user;
+const userIsAdmin = isAdmin(user);
+---
+
+<Layout title="Portal">
+	<Container>
+		<div class="flex flex-col gap-8 w-full">
+			<div class="flex flex-col gap-4">
+				<h1 class="text-4xl font-bold">Welcome to the Portal</h1>
+				<p class="text-xl opacity-80">
+					Hello, {user?.username || "User"}! 
+					<span class="text-sm opacity-60">({user?.role})</span>
+				</p>
+			</div>
+
+			<div class="flex flex-col gap-6">
+				<div class="flex flex-col gap-4 p-6 rounded-lg border border-gray-300 dark:border-gray-700">
+					<h2 class="text-2xl font-semibold">Quick Actions</h2>
+					<div class="flex flex-col gap-2">
+						<a href="/about" class="text-blue-600 dark:text-blue-400 hover:underline">
+							Edit About Page
+						</a>
+						<a href="/resume" class="text-blue-600 dark:text-blue-400 hover:underline">
+							Update Resume
+						</a>
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-4 p-6 rounded-lg border border-gray-300 dark:border-gray-700">
+					<h2 class="text-2xl font-semibold">Account Info</h2>
+					<div class="flex flex-col gap-2 text-sm">
+						<p><span class="font-semibold">User ID:</span> {user?.id}</p>
+						{user?.githubId && <p><span class="font-semibold">GitHub ID:</span> {user.githubId}</p>}
+						<p><span class="font-semibold">Username:</span> {user?.username}</p>
+						<p><span class="font-semibold">Role:</span> <span class="capitalize">{user?.role}</span></p>
+						<p><span class="font-semibold">Auth Source:</span> <span class="capitalize">{user?.authSource}</span></p>
+						<p><span class="font-semibold">Status:</span> 
+							<span class={user?.isActive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+								{user?.isActive ? "Active" : "Inactive"}
+							</span>
+						</p>
+					</div>
+				</div>
+
+				{userIsAdmin && (
+					<div class="flex flex-col gap-4 p-6 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/20">
+						<h2 class="text-2xl font-semibold text-amber-900 dark:text-amber-100">Admin: User Management</h2>
+						<UserManagement client:only="solid-js" />
+					</div>
+				)}
+
+				<div class="flex flex-col gap-4 p-6 rounded-lg border border-gray-300 dark:border-gray-700">
+					<h2 class="text-2xl font-semibold">System Status</h2>
+					<div class="flex flex-col gap-2">
+						<p class="flex items-center gap-2">
+							<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+							<span>All systems operational</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</Container>
+</Layout>

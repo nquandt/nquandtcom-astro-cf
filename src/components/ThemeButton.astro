@@ -1,0 +1,11 @@
+<button data-theme-button class="dark:i-carbon-sun light:i-carbon-moon"
+></button>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const buttons = document.querySelectorAll("[data-theme-button]");
+        buttons.forEach((b) => {
+            b.addEventListener("click", () => (window as any).toggleTheme());
+        });
+    });
+</script>

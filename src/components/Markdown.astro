@@ -1,0 +1,16 @@
+---
+interface Props {
+    content: string;
+}
+
+import { marked } from "marked";
+import Prose from "@/components/Prose.astro";
+
+const { content } = Astro.props;
+
+const mdContent = marked.parse(content);
+---
+
+<Prose>
+    <div class="flex flex-col gap-2" set:html={mdContent} />
+</Prose>
