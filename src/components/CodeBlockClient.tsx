@@ -69,15 +69,14 @@ export default function CodeBlockClient(props: Props) {
   };
 
   return (
-  <div ref={(el) => (rootRef = el as HTMLElement | undefined)} class="codeblock-action-root" data-wrap={wrap() ? 'on' : 'off'}>
+    <div ref={(el) => (rootRef = el as HTMLElement | undefined)} class="codeblock-action-root" data-wrap={wrap() ? 'on' : 'off'}>
       <div class="codeblock-action-bar absolute top-2 right-2 flex gap-2">
-        <button class="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 border border-zinc-200/20 dark:border-zinc-800/40 shadow-sm" type="button" onClick={(e) => copy(e)} aria-label="Copy code">Copy</button>
+        {props.rawUrl ? <a class="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 border border-zinc-200/20 dark:border-zinc-800/40 shadow-sm" href={props.rawUrl} download={props.filename ?? undefined} aria-label="Download file">Download</a> : null}
         {props.allowToggle !== false ? (
           <button class="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 border border-zinc-200/20 dark:border-zinc-800/40 shadow-sm" type="button" aria-label="Toggle wrap" onClick={toggle}>{wrap() ? 'Scroll' : 'Wrap'}</button>
         ) : null}
-        {props.rawUrl ? <a class="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 border border-zinc-200/20 dark:border-zinc-800/40 shadow-sm" href={props.rawUrl} download={props.filename ?? undefined} aria-label="Download file">Download</a> : null}
+        <button class="text-xs px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 border border-zinc-200/20 dark:border-zinc-800/40 shadow-sm" type="button" onClick={(e) => copy(e)} aria-label="Copy code">Copy</button>
       </div>
-
       {/* ARIA live region for small copy feedback (prevents changing button text and layout) */}
       <span class="sr-only" aria-live="polite" ref={(el) => (liveRegion = el as HTMLElement | undefined)}></span>
     </div>

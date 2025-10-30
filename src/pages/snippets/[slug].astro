@@ -14,7 +14,7 @@ const rendered = await render(entry);
 
 <Layout title={entry.data.title} description={entry.body?.slice(0, 140)}>
   <Container>
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col gap-4">
       <h1>{entry.data.title}</h1>
       <Markdown2 Content={rendered.Content} components={{ CodeBlock }} />
     </div>
