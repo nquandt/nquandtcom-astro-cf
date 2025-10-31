@@ -6,11 +6,9 @@ filename: "ClientSideRedirectExtensions.cs"
 raw: "/snippets/ClientSideRedirectExtensions.cs.md"
 description: "C# extension method for HttpContext to perform client-side redirects using meta-refresh."
 ---
-import ccode from "../../../../public/files/snippets/ClientSideRedirectExtensions.cs?raw";
-
 If ever needing to force cookie attachment in a user flow given "strict" cookie safesite settings.
 
-<CodeBlock lang="csharp" filename="ClientSideRedirectExtensions.cs" rawUrl="/files/snippets/ClientSideRedirectExtensions.cs" code={ccode} />
+<CodeBlock lang="csharp" filename="ClientSideRedirectExtensions.cs" rawUrl="/files/snippets/ClientSideRedirectExtensions.cs"/>
 
 This does mess with client side analytics tools that rely on things like url referrer headers since the redirect now happens entirely on the client side. You also would need to be cautious about traffic metrics as this would look like an extra visit in many cases.
 

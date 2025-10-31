@@ -10,7 +10,7 @@ const { slug } = Astro.params;
 const all = await getCollection("snippets");
 const entry = all.find((e) => e.data.slug === slug);
 if (!entry) throw new Error("Snippet not found");
-const rendered = await render(entry);
+const { Content } = await render(entry);
 const localizedPath = makeLocalizedPathBuilder(Astro);
 ---
 
@@ -29,7 +29,7 @@ const localizedPath = makeLocalizedPathBuilder(Astro);
         <h1>{entry.data.title}</h1>
       </div>
       {entry.data.description && <p>{entry.data.description}</p>}
-      <Markdown2 Content={rendered.Content} components={{ CodeBlock }} />
+      <Markdown2 Content={Content} components={{ CodeBlock }} />
     </div>
   </Container>
 </Layout>
