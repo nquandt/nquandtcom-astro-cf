@@ -1,19 +1,21 @@
 ---
 interface Props {
-  code: string;
+  code?: string;
   lang?: CodeLanguage;
   filename?: string;
   rawUrl?: string;
 }
 
-import type { CodeLanguage } from 'astro';
-import CodeBlockClient from './CodeBlockClient.tsx';
-import { Code } from 'astro:components';
+import type { CodeLanguage } from "astro";
+import CodeBlockClient from "./CodeBlockClient.tsx";
+import { Code } from "astro:components";
+import { readFileSync } from "node:fs";
 
 const { code, lang = "text", filename, rawUrl } = Astro.props as Props;
 
-const trimmedCode = code.trim();
-
+const trimmedCode = (
+  !code && rawUrl ? readFileSync("/bundle" + rawUrl, { encoding: "utf-8" }) : (code ?? "")
+).trim();
 ---
 
 <!-- Render the Shiki-powered server-side Code block and mount a tiny client that
@@ -24,7 +26,15 @@ const trimmedCode = code.trim();
       <Code code={trimmedCode} theme="dracula" lang={lang} />
 
       <!-- Client: idle mount — will attach to the server-rendered code element -->
-      <CodeBlockClient client:idle code={trimmedCode} lang={lang} filename={filename} rawUrl={rawUrl} initialWrap={true} allowToggle={true} />
+      <CodeBlockClient
+        client:idle
+        code={trimmedCode}
+        lang={lang}
+        filename={filename}
+        rawUrl={rawUrl}
+        initialWrap={true}
+        allowToggle={true}
+      />
     </div>
   </div>
 </div>
@@ -33,7 +43,7 @@ const trimmedCode = code.trim();
   /* Prefer UnoCSS/Tailwind utility classes for visuals. Keep a small fallback for
      z-index and hit-area handling below. */
   /* Code block layout: allow horizontal scrolling without breaking page flow */
-  .codeblock-wrap{
+  .codeblock-wrap {
     overflow-x: auto; /* allow horizontal scroll */
     -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
     max-width: 100%;
@@ -41,18 +51,18 @@ const trimmedCode = code.trim();
     min-width: 0; /* allow shrinking inside flex containers */
   }
 
-  .codeblock-root{
+  .codeblock-root {
     min-width: 0; /* prevent the root from forcing overflow in flex parents */
   }
 
-  .codeblock-pre{
+  .codeblock-pre {
     margin: 0; /* remove default pre margin */
     width: 100%;
     box-sizing: border-box;
   }
 
   /* Default: wrap code lines (wordwrap) */
-  .codeblock-root[data-wrap="on"] .codeblock-code{
+  .codeblock-root[data-wrap="on"] .codeblock-code {
     white-space: pre-wrap;
     word-break: break-word;
     min-width: 0;
@@ -60,7 +70,7 @@ const trimmedCode = code.trim();
   }
 
   /* Scroll mode: preserve whitespace and allow horizontal scroll */
-  .codeblock-root[data-wrap="off"] .codeblock-code{
+  .codeblock-root[data-wrap="off"] .codeblock-code {
     white-space: pre;
     min-width: max-content; /* let the code determine intrinsic width so the wrapper can scroll */
     overflow-wrap: normal;
@@ -68,7 +78,20 @@ const trimmedCode = code.trim();
 
   /* Minimal scoped rules: ensure the action bar stays above the code and
      provide a small non-interactive hit-area to avoid overlap issues. */
-  .codeblock-action-bar{ z-index: 20; pointer-events: auto; }
-  .codeblock-pre{ position: relative; }
-  .codeblock-pre::after{ content: ''; position: absolute; top: .25rem; right: .25rem; width: 6.5rem; height: 2.25rem; pointer-events: none; }
+  .codeblock-action-bar {
+    z-index: 20;
+    pointer-events: auto;
+  }
+  .codeblock-pre {
+    position: relative;
+  }
+  .codeblock-pre::after {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 6.5rem;
+    height: 2.25rem;
+    pointer-events: none;
+  }
 </style>
